@@ -1,12 +1,11 @@
 package com.hexagon.dtt
 
-import java.util.UUID
 import com.hexagon.aggregate.Account
 import com.hexagon.events.AccountEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class AccountTests: BaseTest(){
+class AccountEventsTests: BaseTest(){
     @Test
     fun `should apply AccountCreated event`() {
         val accountId = getAccountId()
