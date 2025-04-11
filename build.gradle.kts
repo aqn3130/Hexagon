@@ -63,6 +63,7 @@ dependencies {
     implementation("org.http4k:http4k-template-handlebars")
     implementation("org.postgresql:postgresql:42.2.23")
     implementation("org.flywaydb:flyway-core:8.5.13")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     testImplementation("org.http4k:http4k-testing-approval")
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")

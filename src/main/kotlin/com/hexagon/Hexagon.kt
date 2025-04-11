@@ -12,8 +12,9 @@ import java.util.ArrayDeque
 import com.adapters.PostgresRepository
 import com.db.Migration
 import com.domain.ports.UserController
+import com.hexagon.events.CreateAccount
+import com.hexagon.events.Replay
 import com.hexagon.models.UserViewModel
-import org.flywaydb.core.Flyway
 import org.http4k.core.*
 import org.http4k.core.ContentType.Companion.TEXT_HTML
 import org.http4k.core.Method.GET
@@ -27,7 +28,6 @@ import org.http4k.routing.routes
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
 import org.http4k.template.HandlebarsTemplates
-import org.http4k.template.TemplateRenderer
 import org.http4k.template.viewModel
 
 val circuitBreaker = CircuitBreaker.of(
@@ -100,4 +100,8 @@ fun main() {
     val server = printingApp.asServer(Undertow(9000)).start()
 
     println("Server started on " + server.port())
+
+//    CreateAccount().createSampleAccount()
+    val balance = Replay().getBalanceByReplay("0a3003d6-c025-43c2-ac0c-a197247736d4")
+    println(balance)
 }
