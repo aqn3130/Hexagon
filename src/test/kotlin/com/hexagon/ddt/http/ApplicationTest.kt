@@ -20,58 +20,6 @@ import org.junit.jupiter.api.Test
 
 class ApplicationTest: BaseTest() {
 
-    private val eventStore = EventStore()
-    private val balanceProjection = BalanceProjection()
-
-
-    data class CreateAccountRequest(val accountId: UUID, val initialBalance: Double)
-    data class TransactionRequest(val accountId: String, val amount: Double)
-
-    val createAccountLens = Body.auto<CreateAccountRequest>().toLens()
-    val transactionLens = Body.auto<TransactionRequest>().toLens()
-
-
-    private val app = DebuggingFilters.PrintRequestAndResponse().then(
-        routes(
-            "/accounts" bind Method.POST to { req ->
-                val request = createAccountLens(req)
-                val account = Account(request.accountId.toExternalForm())
-                val event = AccountEvent.AccountCreated(request.accountId.toExternalForm(), request.initialBalance)
-                account.apply(event)
-                balanceProjection.updateProjection(event, request.accountId.toExternalForm())
-                eventStore.save(account.getUncommittedChanges(), request.accountId.toExternalForm())
-                Response(Status.CREATED).body("Account created")
-            },
-            "/accounts/deposit" bind Method.POST to { req ->
-                val request = transactionLens(req)
-                val account = Account(request.accountId)
-                val events = eventStore.getEvents(request.accountId)
-                account.replay(events)
-                val event = AccountEvent.MoneyDeposited(request.amount)
-                account.apply(event)
-                balanceProjection.updateProjection(event, request.accountId)
-                eventStore.save(account.getUncommittedChanges(), request.accountId)
-                Response(Status.OK).body("Deposit successful")
-            },
-            "/accounts/withdraw" bind Method.POST to { req ->
-                val request = transactionLens(req)
-                val account = Account(request.accountId)
-                val events = eventStore.getEvents(request.accountId)
-                account.replay(events)
-                val event = AccountEvent.MoneyWithdrawn(request.amount)
-                account.apply(event)
-                balanceProjection.updateProjection(event, request.accountId)
-                eventStore.save(account.getUncommittedChanges(), request.accountId)
-                Response(Status.OK).body("Withdrawal successful")
-            },
-            "/accounts/{accountId}/balance" bind Method.GET to { req ->
-                val accountId = req.path("accountId")!!
-                val balance = balanceProjection.getBalance(accountId)
-                Response(Status.OK).body(balance.toString())
-            }
-        )
-    )
-
     @Test
     fun `test create account`() {
         val accountId = UUID.randomUUID()
