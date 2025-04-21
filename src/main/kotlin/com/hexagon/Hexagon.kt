@@ -102,6 +102,6 @@ fun main() {
     println("Server started on " + server.port())
 
 //    CreateAccount().createSampleAccount()
-    val balance = Replay().getBalanceByReplay("0a3003d6-c025-43c2-ac0c-a197247736d4")
+    val balance = Replay().getBalanceByReplay("0a3003d6-c025-43c2-ac0c-a197247736d4") ?: null
     println(balance)
 }

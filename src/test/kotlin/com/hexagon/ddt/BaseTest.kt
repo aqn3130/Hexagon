@@ -1,4 +1,4 @@
-package com.hexagon.dtt
+package com.hexagon.ddt
 
 import java.util.UUID
 

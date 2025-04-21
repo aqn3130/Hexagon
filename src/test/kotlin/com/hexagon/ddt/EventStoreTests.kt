@@ -1,4 +1,4 @@
-package com.hexagon.dtt
+package com.hexagon.ddt
 
 import com.hexagon.events.AccountEvent
 import com.hexagon.eventstore.EventStore
