@@ -1,6 +1,7 @@
 package com.hexagon.ddt
 
 import java.util.UUID
+import com.db.DatabaseConnection
 import com.hexagon.aggregate.Account
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
@@ -20,8 +21,8 @@ open class BaseTest {
 }
 
 fun startApp(): RoutingHttpHandler {
-    val eventStore = EventStore()
-    val balanceProjection = BalanceProjection()
+    val eventStore = EventStore(DatabaseConnection())
+    val balanceProjection = BalanceProjection(DatabaseConnection())
 
     data class CreateAccountRequest(val accountId: UUID, val initialBalance: Double)
     data class TransactionRequest(val accountId: String, val amount: Double)

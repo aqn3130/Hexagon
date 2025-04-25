@@ -2,7 +2,6 @@ package com.hexagon.ddt
 
 import com.hexagon.aggregate.Account
 import com.hexagon.events.AccountEvent
-import com.hexagon.eventstore.EventStore
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -1,12 +1,13 @@
 package com.hexagon.ddt
 
+import com.db.DatabaseConnection
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class BalanceProjectionTests : BaseTest() {
-    private val balanceProjection = BalanceProjection()
+    private val balanceProjection = BalanceProjection(DatabaseConnection())
 
     @Test
     fun `should update projection for AccountCreated event`() {

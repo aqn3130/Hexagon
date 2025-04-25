@@ -8,9 +8,11 @@ import org.http4k.core.Response
 import org.http4k.core.then
 import org.http4k.filter.DebuggingFilters.PrintResponse
 import org.http4k.filter.ResilienceFilters.CircuitBreak
+import com.adapters.AccountAdapter
 
 fun main() {
     val client: HttpHandler = JavaHttpClient()
+    val circuitBreaker = AccountAdapter().circuitBreaker
 
     val printingClient: HttpHandler = PrintResponse()
             .then(CircuitBreak(circuitBreaker, isError = { r: Response -> !r.status.successful } )).then(client)

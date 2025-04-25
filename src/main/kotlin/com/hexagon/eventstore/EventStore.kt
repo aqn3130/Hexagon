@@ -1,24 +1,15 @@
 package com.hexagon.eventstore
 
-import com.hexagon.events.AccountEvent
-
-import java.sql.Connection
-import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.ResultSet
+import com.db.DatabaseConnection
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+import com.hexagon.events.AccountEvent
 
-class EventStore {
-    private val connection: Connection
+class EventStore(dbConnection: DatabaseConnection) {
     private val objectMapper = jacksonObjectMapper()
-
-    init {
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hexagon", "user", "password")
-    }
-
+    private val connection = dbConnection.connect()
     fun save(events: List<AccountEvent>, account_id: String) {
         val sql = "INSERT INTO events (account_id, event_type, event_data) VALUES (?, ?, ?)"
         val preparedStatement: PreparedStatement = connection.prepareStatement(sql)

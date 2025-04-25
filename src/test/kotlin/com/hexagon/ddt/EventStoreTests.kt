@@ -1,12 +1,13 @@
 package com.hexagon.ddt
 
+import com.db.DatabaseConnection
 import com.hexagon.events.AccountEvent
 import com.hexagon.eventstore.EventStore
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class EventStoreTests : BaseTest() {
-    private val eventStore = EventStore()
+    private val eventStore = EventStore(DatabaseConnection())
 
     @Test
     fun `should save and retrieve events`() {

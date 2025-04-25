@@ -1,13 +1,14 @@
 package com.hexagon.events
 
 import java.util.UUID
+import com.db.DatabaseConnection
 import com.hexagon.aggregate.Account
 import com.hexagon.eventstore.EventStore
 
-class CreateAccount {
-    fun createSampleAccount() {
-        val eventStore = EventStore()
-        val balanceProjection = BalanceProjection()
+class AccountEvents {
+    fun applyAccountEvents() : UUID {
+        val eventStore = EventStore(DatabaseConnection())
+        val balanceProjection = BalanceProjection(dbConnection = DatabaseConnection())
         var accountId = UUID.randomUUID()
         val account = Account(accountId.toExternalForm())
 
@@ -35,6 +36,7 @@ class CreateAccount {
         val events = eventStore.getEvents(accountId.toExternalForm())
         println("Events: $events")
 
+        return accountId
     }
 
     fun UUID.toExternalForm(): String {

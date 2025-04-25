@@ -1,17 +1,12 @@
 package com.hexagon.events
 
-import java.sql.Connection
-import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.ResultSet
+import com.db.DatabaseConnection
 
-class BalanceProjection {
-    private val connection: Connection
+class BalanceProjection (private val dbConnection: DatabaseConnection) {
 
-    init {
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hexagon", "user", "password")
-    }
-
+    private val connection = dbConnection.connect()
     fun updateProjection(event: AccountEvent, account_id: String) {
         when (event) {
             is AccountEvent.AccountCreated -> {
