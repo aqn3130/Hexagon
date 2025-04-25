@@ -1,25 +1,16 @@
 package com.hexagon.adapters
 
-import java.time.Duration
 import java.util.*
-import com.hexagon.db.DatabaseConnection
 import com.hexagon.aggregate.Account
+import com.hexagon.db.DatabaseConnection
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import com.hexagon.eventstore.EventStore
-import com.hexagon.formats.JacksonMessage
-import com.hexagon.formats.jacksonMessageLens
-import com.hexagon.models.HandlebarsViewModel
 import com.hexagon.models.UserViewModel
-import io.github.resilience4j.circuitbreaker.CircuitBreaker
-import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig
-import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.SlidingWindowSynchronizationStrategy.SYNCHRONIZED
-import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig.SlidingWindowType.COUNT_BASED
 import org.http4k.core.*
 import org.http4k.core.ContentType.Companion.TEXT_HTML
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
-import org.http4k.core.Status.Companion.INTERNAL_SERVER_ERROR
 import org.http4k.core.Status.Companion.OK
 import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
@@ -27,6 +18,7 @@ import org.http4k.routing.path
 import org.http4k.routing.routes
 import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.viewModel
+import com.hexagon.domain.models.User
 
 class AccountAdapter {
 
@@ -47,7 +39,7 @@ class AccountAdapter {
             val renderer = HandlebarsTemplates().CachingClasspath()
             val view = Body.viewModel(renderer, TEXT_HTML).toLens()
             val id = request.path("id") ?: Response(Status.BAD_REQUEST)
-            val user: com.hexagon.domain.models.UserViewModel? = userRepository.getUser(id.toString())
+            val user = userRepository.getUser(id.toString())
 
             run {
                 val viewModel = user?.let { UserViewModel(it.id, it.name) }
@@ -56,7 +48,7 @@ class AccountAdapter {
         },
         "/user" bind POST to { request ->
             val name = request.query("name")
-            val user = request.bodyString().let { com.hexagon.domain.models.UserViewModel(it, name.toString()) }
+            val user = request.bodyString().let { User(it, name.toString()) }
             userRepository.saveUser(user)
             Response(Status.CREATED)
         },
