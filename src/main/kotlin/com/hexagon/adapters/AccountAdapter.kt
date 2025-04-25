@@ -39,46 +39,9 @@ class AccountAdapter {
     val createAccountLens = Body.auto<CreateAccountRequest>().toLens()
     val transactionLens = Body.auto<TransactionRequest>().toLens()
 
-    val circuitBreaker = CircuitBreaker.of(
-        "circuit",
-        CircuitBreakerConfig.custom()
-            .slidingWindow(2, 2, COUNT_BASED, SYNCHRONIZED)
-            .permittedNumberOfCallsInHalfOpenState(2)
-            .waitDurationInOpenState(Duration.ofSeconds(1))
-            .build()
-    )
-
-    val circuitBreakerEndpointResponses = ArrayDeque<Response>().apply {
-        add(Response(OK))
-        add(Response(OK))
-        add(Response(INTERNAL_SERVER_ERROR))
-    }
-
     val userRepository = PostgresRepository(DatabaseConnection())
 
     val app: HttpHandler = routes(
-        "/ping" bind GET to {
-            Response(OK).body("pong")
-        },
-
-        "/formats/json/jackson" bind GET to {
-            Response(OK).with(jacksonMessageLens of JacksonMessage("Barry", "Hello there!"))
-        },
-
-        "/templates/handlebars" bind GET to {
-            val renderer = HandlebarsTemplates().CachingClasspath()
-            val view = Body.viewModel(renderer, TEXT_HTML).toLens()
-            val viewModel = HandlebarsViewModel("Hello there!")
-            Response(OK).with(view of viewModel)
-        },
-
-        "/testing/hamkrest" bind GET to { request ->
-            Response(OK).body("Echo '${request.bodyString()}'")
-        },
-
-        "/resilience" bind GET to {
-            circuitBreakerEndpointResponses.pop()
-        },
 
         "/user/{id}" bind GET to { request ->
             val renderer = HandlebarsTemplates().CachingClasspath()
