@@ -1,19 +1,13 @@
 package com.hexagon.adapters
 
-import java.sql.Connection
-import java.util.UUID
-import com.hexagon.domain.models.UserViewModel
+import java.util.*
 import com.domain.ports.UserRepository
-import org.postgresql.ds.PGSimpleDataSource
+import com.hexagon.db.DatabaseConnection
+import com.hexagon.domain.models.UserViewModel
 
-class PostgresRepository: UserRepository {
-    private val dataSource = PGSimpleDataSource().apply {
-        setURL("jdbc:postgresql://localhost:5432/hexagon")
-        user = "user"
-        password = "password"
-    }
+class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepository {
 
-    private fun getConnection(): Connection = dataSource.connection
+    private fun getConnection() = dbConnection.connect()
 
     override fun getUser(id: String): UserViewModel? {
         getConnection().use { connection ->

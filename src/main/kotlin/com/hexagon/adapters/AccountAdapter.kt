@@ -54,7 +54,7 @@ class AccountAdapter {
         add(Response(INTERNAL_SERVER_ERROR))
     }
 
-    val userRepository = PostgresRepository()
+    val userRepository = PostgresRepository(DatabaseConnection())
 
     val app: HttpHandler = routes(
         "/ping" bind GET to {

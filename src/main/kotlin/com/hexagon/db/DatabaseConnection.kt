@@ -5,6 +5,6 @@ import java.sql.DriverManager
 
 class DatabaseConnection {
     fun connect(): Connection {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/hexagon", "user", System.getenv("DB_PASSWORD"))
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/hexagon", "user", "password")
     }
 }

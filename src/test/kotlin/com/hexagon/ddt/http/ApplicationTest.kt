@@ -1,6 +1,7 @@
 package com.hexagon.ddt.http
 
 import java.util.*
+import com.hexagon.adapters.AccountAdapter
 import com.hexagon.ddt.BaseTest
 import com.natpryce.hamkrest.assertion.assertThat
 import org.http4k.core.Method.GET
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class ApplicationTest: BaseTest() {
+
+    val app = AccountAdapter().app
 
     @Test
     fun `test create account`() {
