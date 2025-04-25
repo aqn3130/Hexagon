@@ -1,6 +1,6 @@
 package com.hexagon
 
-import com.hexagon.adapters.AccountAdapter
+import com.hexagon.domain.application.Routes
 import com.hexagon.db.Migration
 import com.hexagon.events.ExampleAccountEvents
 import com.hexagon.events.Replay
@@ -10,7 +10,7 @@ import org.http4k.filter.DebuggingFilters.PrintRequest
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
-val app = AccountAdapter().app
+val app = Routes().app
 
 fun main() {
     Migration().runMigration()

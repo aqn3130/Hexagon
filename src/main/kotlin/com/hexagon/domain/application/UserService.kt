@@ -9,6 +9,5 @@ class UserService(private val userRepository: UserRepository) {
     fun getUser(id: String): User? = userRepository.getUser(id)
     fun saveUser(user: User) {
         userRepository.saveUser(user)
-        println("User id: ${user.id}")
     }
 }

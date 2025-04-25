@@ -1,6 +1,7 @@
-package com.hexagon.adapters
+package com.hexagon.domain.application
 
 import java.util.*
+import com.hexagon.adapters.PostgresRepository
 import com.hexagon.aggregate.Account
 import com.hexagon.db.DatabaseConnection
 import com.hexagon.events.AccountEvent
@@ -20,7 +21,7 @@ import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.viewModel
 import com.hexagon.domain.models.User
 
-class AccountAdapter {
+class Routes {
 
     val eventStore = EventStore(DatabaseConnection())
     val balanceProjection = BalanceProjection(DatabaseConnection())
