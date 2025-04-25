@@ -1,6 +1,6 @@
-package com.adapters
+package com.hexagon.adapters
 
-import com.domain.models.UserViewModel
+import com.hexagon.domain.models.UserViewModel
 import com.domain.ports.UserRepository
 
 class InMemoryUserRepository : UserRepository {

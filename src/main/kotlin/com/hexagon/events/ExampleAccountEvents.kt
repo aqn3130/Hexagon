@@ -1,11 +1,11 @@
 package com.hexagon.events
 
 import java.util.UUID
-import com.db.DatabaseConnection
+import com.hexagon.db.DatabaseConnection
 import com.hexagon.aggregate.Account
 import com.hexagon.eventstore.EventStore
 
-class AccountEvents {
+class ExampleAccountEvents {
     fun applyAccountEvents() : UUID {
         val eventStore = EventStore(DatabaseConnection())
         val balanceProjection = BalanceProjection(dbConnection = DatabaseConnection())

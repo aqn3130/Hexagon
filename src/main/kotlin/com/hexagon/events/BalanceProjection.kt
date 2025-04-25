@@ -2,7 +2,7 @@ package com.hexagon.events
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet
-import com.db.DatabaseConnection
+import com.hexagon.db.DatabaseConnection
 
 class BalanceProjection (private val dbConnection: DatabaseConnection) {
 

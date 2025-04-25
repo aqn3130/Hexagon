@@ -2,7 +2,7 @@ package com.hexagon.eventstore
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet
-import com.db.DatabaseConnection
+import com.hexagon.db.DatabaseConnection
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.hexagon.events.AccountEvent

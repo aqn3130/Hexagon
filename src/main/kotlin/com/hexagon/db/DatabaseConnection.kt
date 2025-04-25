@@ -1,4 +1,4 @@
-package com.db
+package com.hexagon.db
 
 import java.sql.Connection
 import java.sql.DriverManager

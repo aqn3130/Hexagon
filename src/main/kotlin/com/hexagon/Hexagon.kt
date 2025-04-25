@@ -1,8 +1,8 @@
 package com.hexagon
 
-import com.adapters.AccountAdapter
-import com.db.Migration
-import com.hexagon.events.AccountEvents
+import com.hexagon.adapters.AccountAdapter
+import com.hexagon.db.Migration
+import com.hexagon.events.ExampleAccountEvents
 import com.hexagon.events.Replay
 import org.http4k.core.HttpHandler
 import org.http4k.core.then
@@ -24,7 +24,7 @@ fun main() {
 }
 
 private fun applyAccountEvents() {
-    val sampleAccountId = AccountEvents().applyAccountEvents()
+    val sampleAccountId = ExampleAccountEvents().applyAccountEvents()
     val balance = Replay().getBalanceByReplay(sampleAccountId.toString()) ?: null
     println(balance)
 }

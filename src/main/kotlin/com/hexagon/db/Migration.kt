@@ -1,4 +1,4 @@
-package com.db
+package com.hexagon.db
 
 import org.flywaydb.core.Flyway
 

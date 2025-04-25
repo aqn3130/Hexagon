@@ -1,6 +1,6 @@
 package com.hexagon.events
 
-import com.db.DatabaseConnection
+import com.hexagon.db.DatabaseConnection
 import com.hexagon.aggregate.Account
 import com.hexagon.eventstore.EventStore
 

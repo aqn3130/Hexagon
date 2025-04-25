@@ -1,6 +1,6 @@
 package com.hexagon.ddt
 
-import com.db.DatabaseConnection
+import com.hexagon.db.DatabaseConnection
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import org.junit.jupiter.api.Assertions.assertEquals

@@ -1,7 +1,7 @@
 package com.hexagon.ddt
 
 import java.util.UUID
-import com.db.DatabaseConnection
+import com.hexagon.db.DatabaseConnection
 import com.hexagon.aggregate.Account
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection

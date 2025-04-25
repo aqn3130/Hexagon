@@ -1,8 +1,8 @@
-package com.adapters
+package com.hexagon.adapters
 
 import java.time.Duration
 import java.util.*
-import com.db.DatabaseConnection
+import com.hexagon.db.DatabaseConnection
 import com.hexagon.aggregate.Account
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
@@ -84,7 +84,7 @@ class AccountAdapter {
             val renderer = HandlebarsTemplates().CachingClasspath()
             val view = Body.viewModel(renderer, TEXT_HTML).toLens()
             val id = request.path("id") ?: Response(Status.BAD_REQUEST)
-            val user: com.domain.models.UserViewModel? = userRepository.getUser(id.toString())
+            val user: com.hexagon.domain.models.UserViewModel? = userRepository.getUser(id.toString())
 
             run {
                 val viewModel = user?.let { UserViewModel(it.id, it.name) }
@@ -93,7 +93,7 @@ class AccountAdapter {
         },
         "/user" bind POST to { request ->
             val name = request.query("name")
-            val user = request.bodyString().let { com.domain.models.UserViewModel(it, name.toString()) }
+            val user = request.bodyString().let { com.hexagon.domain.models.UserViewModel(it, name.toString()) }
             userRepository.saveUser(user)
             Response(Status.CREATED)
         },

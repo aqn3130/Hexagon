@@ -1,11 +1,11 @@
-package com.adapters
+package com.hexagon.adapters
 
-import com.domain.models.UserViewModel
+import com.hexagon.domain.models.UserViewModel
 import org.http4k.core.*
 import org.http4k.core.Method.*
 import org.http4k.routing.bind
 import org.http4k.routing.routes
-import com.domain.application.UserService
+import com.hexagon.domain.application.UserService
 import org.http4k.routing.path
 
 fun httpHandler(userService: UserService): HttpHandler = routes(

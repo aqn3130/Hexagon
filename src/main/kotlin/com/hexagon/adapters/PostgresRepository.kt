@@ -1,8 +1,8 @@
-package com.adapters
+package com.hexagon.adapters
 
 import java.sql.Connection
 import java.util.UUID
-import com.domain.models.UserViewModel
+import com.hexagon.domain.models.UserViewModel
 import com.domain.ports.UserRepository
 import org.postgresql.ds.PGSimpleDataSource
 

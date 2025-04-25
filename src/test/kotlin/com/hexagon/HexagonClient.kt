@@ -8,7 +8,7 @@ import org.http4k.core.Response
 import org.http4k.core.then
 import org.http4k.filter.DebuggingFilters.PrintResponse
 import org.http4k.filter.ResilienceFilters.CircuitBreak
-import com.adapters.AccountAdapter
+import com.hexagon.adapters.AccountAdapter
 
 fun main() {
     val client: HttpHandler = JavaHttpClient()

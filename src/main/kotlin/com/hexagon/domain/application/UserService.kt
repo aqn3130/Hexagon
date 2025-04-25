@@ -1,6 +1,6 @@
-package com.domain.application
+package com.hexagon.domain.application
 
-import com.domain.models.UserViewModel
+import com.hexagon.domain.models.UserViewModel
 import com.domain.ports.UserRepository
 
 data class User(val id: String, val name: String)

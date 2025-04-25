@@ -1,6 +1,6 @@
 package com.domain.ports
 
-import com.adapters.PostgresRepository
+import com.hexagon.adapters.PostgresRepository
 import com.hexagon.models.UserViewModel
 import org.http4k.core.*
 import org.http4k.core.ContentType.Companion.TEXT_HTML

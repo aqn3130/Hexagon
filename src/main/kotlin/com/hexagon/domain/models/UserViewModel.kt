@@ -1,3 +1,3 @@
-package com.domain.models
+package com.hexagon.domain.models
 
 data class UserViewModel(val id: String, val name: String)
