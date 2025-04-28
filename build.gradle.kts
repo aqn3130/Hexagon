@@ -51,9 +51,7 @@ tasks {
 }
 
 dependencies {
-    implementation(platform("org.http4k:http4k-bom:6.4.1.0"))
-    implementation("org.http4k:http4k-server-jetty:4.9.9.0")
-    implementation("org.http4k.pro:http4k-tools-hotreload")
+    implementation(platform("org.http4k:http4k-bom:5.47.0.0"))
     implementation("org.http4k:http4k-config")
     implementation("org.http4k:http4k-connect-storage-jdbc")
     implementation("org.http4k:http4k-core")
@@ -63,6 +61,7 @@ dependencies {
     implementation("org.http4k:http4k-template-handlebars")
     implementation("org.postgresql:postgresql:42.2.23")
     implementation("org.flywaydb:flyway-core:8.5.13")
+    implementation("com.natpryce:krouton:2.4.0.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     testImplementation("org.http4k:http4k-testing-approval")
     testImplementation("org.http4k:http4k-testing-hamkrest")
