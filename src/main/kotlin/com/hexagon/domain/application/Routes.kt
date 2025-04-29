@@ -53,15 +53,12 @@ class Routes {
     val resources: ResourceRouter = resources {
 
         getUserById methods {
-            GET { request, userId ->
+            GET { _, userId ->
                 val renderer = HandlebarsTemplates().CachingClasspath()
                 val view = Body.viewModel(renderer, TEXT_HTML).toLens()
                 val user = userRepository.getUser(userId)
-
-                run {
-                    val viewModel = user?.let { UserViewModel(it.id, it.name) }
-                    Response(OK).with(view of viewModel!!)
-                }
+                val viewModel = user?.let { UserViewModel(it.id, it.name) }
+                Response(OK).with(view of viewModel!!)
             }
         }
 
