@@ -10,7 +10,7 @@ import org.http4k.filter.DebuggingFilters.PrintRequest
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
-val app = Routes().app
+val app = Routes().resources
 
 fun main() {
     Migration().runMigration()

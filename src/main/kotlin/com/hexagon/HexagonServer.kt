@@ -1,5 +1,6 @@
 package com.hexagon
 
+import com.hexagon.domain.application.Routes
 import com.hexagon.lib.monitoring.EventMonitor
 import com.natpryce.krouton.http4k.ResourceRouter
 import com.natpryce.krouton.http4k.resources
@@ -15,19 +16,8 @@ object HexagonServer : ApplicationCreator {
         Bootstrap().startServer(HexagonServer)
     }
 
+
     override fun invoke(bootstrap: Bootstrap): HexagonApplication =
-        HexagonApplication(EventMonitor, bootstrap.createHttp4KServerWithKrouton(app()))
-
-    private val example = root + "example"
-
-    private fun app(): ResourceRouter = resources {
-
-        example methods {
-            GET { Response(Status.OK).body("Welcome to anura-tester! Your IP address is ${it.source?.address}.\n${it.headers.joinToString("\n", transform = { (name, value) -> "$name = $value" })}") }
-        }
-        root methods {
-            GET { Response(Status.OK) }
-        }
-    }
+        HexagonApplication(EventMonitor, bootstrap.createHttp4KServerWithKrouton(Routes().resources))
 }
 
