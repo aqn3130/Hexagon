@@ -12,7 +12,7 @@ class Bootstrap {
         idleTimeout: Duration? = null
     ) = Http4kServer(
         applicationIdentifier = "unknown",
-        port = 0,
+        port = 8080,
         idleTimeout = idleTimeout,
         handler = createHttp4KHandler(router)
     )
@@ -40,8 +40,6 @@ class Bootstrap {
         System.setProperty("otel.metrics.exporter", "none")
         System.setProperty("otel.logs.exporter", "none")
 
-
-        // TODO: use initialise instead.
         return OpenTelemetry.noop()
     }
 

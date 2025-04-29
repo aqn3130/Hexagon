@@ -35,6 +35,7 @@ import org.http4k.filter.defaultSpanNamer
 
 val APPLICATION_JSON: MediaType = create("application", "json")
 private val json = JsonNodeFactory.instance
+
 object Json {
     fun mapperPrettyPrint(): ObjectMapper =
         ObjectMapper()
@@ -46,6 +47,7 @@ object Json {
                     ),
             )
 }
+
 fun JsonNode.prettyPrint(): String =
     Json.mapperPrettyPrint().writeValueAsString(this)
 
@@ -119,6 +121,7 @@ private fun KClass<*>.resolutionOrder(): List<KClass<*>> {
 interface ErrorCode : Flattenable {
 
 }
+
 interface HasCause {
     val cause: Throwable
 }

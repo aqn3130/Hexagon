@@ -1,5 +1,8 @@
 package com.hexagon
 
+import com.hexagon.lib.monitoring.Monitor
+import com.hexagon.lib.monitoring.MonitoringEvent
+
 class HexagonApplication(
     private val monitor: Monitor<BackgroundActivityShutdownFailed>,
     private val server: HttpServer,
