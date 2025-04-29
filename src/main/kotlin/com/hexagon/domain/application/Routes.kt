@@ -56,7 +56,7 @@ class Routes {
             GET { _, userId ->
                 val renderer = HandlebarsTemplates().CachingClasspath()
                 val view = Body.viewModel(renderer, TEXT_HTML).toLens()
-                val user = userRepository.getUser(userId)
+                val user = userRepository.getUser(userId) ?: return@GET Response(Status.NOT_FOUND)
                 val viewModel = user?.let { UserViewModel(it.id, it.name) }
                 Response(OK).with(view of viewModel!!)
             }
