@@ -1,5 +1,7 @@
 package com.hexagon
 
+import com.hexagon.lib.monitoring.Monitor
+import com.hexagon.lib.monitoring.MonitoringEvent
 import com.natpryce.krouton.http4k.ResourceRouter
 import com.natpryce.krouton.http4k.resources
 import com.natpryce.krouton.plus
@@ -7,20 +9,6 @@ import com.natpryce.krouton.root
 import org.http4k.core.*
 import org.http4k.core.Method.GET
 import org.http4k.core.Status
-
-interface MonitoringEvent :
-
-    Flattenable {
-    val actionForDevOnSupport: String? get() = null
-
-    fun contextName(): String = "context"
-
-    fun message(): String = "test"
-}
-
-interface Monitor<in T : MonitoringEvent> {
-    fun notify(event: T)
-}
 
 object HexagonServer : ApplicationCreator {
     @JvmStatic
