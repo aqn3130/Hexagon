@@ -10,14 +10,17 @@ import org.http4k.core.Body
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
+import org.http4k.core.Status.Companion.OK
 import org.http4k.format.Jackson.auto
 
 data class CreateAccountRequest(val accountId: UUID, val initialBalance: Double)
+data class TransactionRequest(val accountId: String, val amount: Double)
 
 class AccountHttpHandler {
     val eventStore = EventStore(DatabaseConnection())
     val createAccountLens = Body.auto<CreateAccountRequest>().toLens()
     val balanceProjection = BalanceProjection(DatabaseConnection())
+    val transactionLens = Body.auto<TransactionRequest>().toLens()
 
     fun createAccount(request: Request) : Response {
         val accountLens = createAccountLens(request)
@@ -27,5 +30,34 @@ class AccountHttpHandler {
         balanceProjection.updateProjection(event, accountLens.accountId.toString())
         eventStore.save(account.getUncommittedChanges(), accountLens.accountId.toString())
         return Response(Status.CREATED).body("Account created")
+    }
+
+    fun deposit(request: Request) : Response {
+        val accountLens = transactionLens(request)
+        val account = Account(accountLens.accountId)
+        val events = eventStore.getEvents(accountLens.accountId)
+        account.replay(events)
+        val event = AccountEvent.MoneyDeposited(accountLens.amount)
+        account.apply(event)
+        balanceProjection.updateProjection(event, accountLens.accountId)
+        eventStore.save(account.getUncommittedChanges(), accountLens.accountId)
+        return Response(OK).body("Deposit successful")
+    }
+
+    fun withdraw(request: Request) : Response {
+        val accountLens = transactionLens(request)
+        val account = Account(accountLens.accountId)
+        val events = eventStore.getEvents(accountLens.accountId)
+        account.replay(events)
+        val event = AccountEvent.MoneyWithdrawn(accountLens.amount)
+        account.apply(event)
+        balanceProjection.updateProjection(event, accountLens.accountId)
+        eventStore.save(account.getUncommittedChanges(), accountLens.accountId)
+        return Response(OK).body("Withdrawal successful")
+    }
+
+    fun accountBalance(request: Request, accountId: String) : Response {
+        val balance = balanceProjection.getBalance(accountId)
+        return Response(OK).body(balance.toString())
     }
 }

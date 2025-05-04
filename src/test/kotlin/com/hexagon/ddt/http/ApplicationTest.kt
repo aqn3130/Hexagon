@@ -1,8 +1,8 @@
 package com.hexagon.ddt.http
 
 import java.util.*
-import com.hexagon.domain.application.Routes
 import com.hexagon.ddt.BaseTest
+import com.hexagon.domain.application.*
 import com.natpryce.hamkrest.assertion.assertThat
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 class ApplicationTest: BaseTest() {
 
-    val app = Routes().resources
+    val app = Hexagon(accountRouter = AccountRouter(), userRouter = UserRouter()).resources
 
     @Test
     fun `test create account`() {
