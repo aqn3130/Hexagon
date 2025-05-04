@@ -1,5 +1,8 @@
 package com.hexagon.lib.common.bootstrap
 
+import com.hexagon.db.Migration
+import com.hexagon.events.ExampleAccountEvents
+import com.hexagon.events.Replay
 import com.hexagon.lib.monitoring.Monitor
 import com.hexagon.lib.monitoring.MonitoringEvent
 
@@ -13,7 +16,11 @@ class HexagonApplication(
 
     override fun start() {
 
+        Migration().runMigration()
+
         activities.forEach(BackgroundActivity::start)
+
+        applyAccountEvents()
 
         Runtime.getRuntime().addShutdownHook(
             object : Thread() {
@@ -30,6 +37,12 @@ class HexagonApplication(
     fun rootUri() = server.rootUri()
 
 
+}
+
+private fun applyAccountEvents() {
+    val sampleAccountId = ExampleAccountEvents().applyAccountEvents()
+    val balance = Replay().getBalanceByReplay(sampleAccountId.toString()) ?: null
+    println(balance)
 }
 
 typealias ApplicationCreator = (bootstrap: Bootstrap) -> HexagonApplication
