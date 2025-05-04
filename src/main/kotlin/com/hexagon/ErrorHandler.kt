@@ -23,10 +23,7 @@ import com.google.common.net.MediaType
 import com.google.common.net.MediaType.create
 import io.opentelemetry.api.OpenTelemetry
 import org.apache.hc.core5.http.ContentType
-import org.http4k.core.Filter
-import org.http4k.core.Request
-import org.http4k.core.Response
-import org.http4k.core.Status
+import org.http4k.core.*
 import org.http4k.core.Status.Companion.INTERNAL_SERVER_ERROR
 import org.http4k.filter.ClientFilters
 import org.http4k.filter.OpenTelemetryTracing
@@ -34,7 +31,10 @@ import org.http4k.filter.ServerFilters
 import org.http4k.filter.defaultSpanNamer
 
 val APPLICATION_JSON: MediaType = create("application", "json")
+
 private val json = JsonNodeFactory.instance
+
+val userNotFoundError: Error = error("User not found")
 
 object Json {
     fun mapperPrettyPrint(): ObjectMapper =
@@ -59,36 +59,9 @@ fun obj(props: Iterable<Pair<String, JsonNode?>?>): ObjectNode =
         props.filterNotNull().forEach { set<ObjectNode>(it.first, it.second) }
     }
 
-interface Flattenable {
-    fun properties() =
-        propertiesByReflection()
-}
-
-private fun Any.propertiesByReflection(): Map<String, String>? {
-    val thisClass = this::class
-
-    @Suppress("UNCHECKED_CAST") // Kotlin reflection API has wrong type constraints!
-    val memberProperties = thisClass.memberProperties as Collection<KProperty1<Any, *>>
-
-    return null
-}
-
 private fun inheritedPropertyDefinitions(ownerClass: KClass<*>, property: KProperty1<*, *>) =
     ownerClass.resolutionOrder()
         .mapNotNull { c -> c.declaredMemberProperties.find { p -> p.name == property.name } }
-
-private fun toPairs(ownerClass: KClass<*>, property: KProperty1<Any, *>, owner: Any): Nothing? {
-    property.isAccessible = true // Don't set isAccessible to false to avoid possible race condition
-
-    val definitions = inheritedPropertyDefinitions(ownerClass, property).toList()
-
-    val reportedValue = property.get(owner)
-
-    return when {
-        shouldReport(definitions) -> null
-        else -> null
-    }
-}
 
 annotation class ReportedName(vararg val names: String)
 annotation class NotReported
@@ -118,10 +91,6 @@ private fun KClass<*>.resolutionOrder(): List<KClass<*>> {
     return hierarchy.toList()
 }
 
-interface ErrorCode : Flattenable {
-
-}
-
 interface HasCause {
     val cause: Throwable
 }
@@ -148,7 +117,7 @@ internal object OpenTelemetryFilters {
             }
         },
         spanNamer = { request ->
-            if (request is Request) {
+            if (true) {
                 defaultSpanNamer(request)
             } else {
                 "${request.method.name} ${request.uri.host}"
