@@ -37,3 +37,8 @@ fun <ERR : ErrorCode, T> tryCatchResult(f: () -> T, onError: (Throwable) -> ERR)
     } catch (t: Throwable) {
         failure(onError(t))
     }
+inline fun <ERR : ErrorCode, T> Result<ERR, T>.onFailure(handler: (Result.Failure<ERR>) -> Nothing): T =
+    when (this) {
+        is Result.Failure -> handler(this)
+        is Result.Success -> value
+    }

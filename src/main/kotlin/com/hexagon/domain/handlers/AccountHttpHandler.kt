@@ -7,6 +7,7 @@ import com.hexagon.domain.application.AccountService
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import com.hexagon.eventstore.EventStore
+import com.hexagon.lib.common.onFailure
 import org.http4k.core.Body
 import org.http4k.core.Request
 import org.http4k.core.Response
@@ -58,7 +59,7 @@ class AccountHttpHandler {
     }
 
     fun accountBalance(request: Request, accountId: String) : Response {
-        val balance = AccountQueryHandler(AccountService(connection = DatabaseConnection())).handle(accountId)
+        val balance = AccountQueryHandler(AccountService(connection = DatabaseConnection())).handle(accountId).onFailure { return error("Not found") }
         return Response(OK).body(balance.toString())
     }
 }
