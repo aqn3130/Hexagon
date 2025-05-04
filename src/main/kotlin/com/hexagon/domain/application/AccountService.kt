@@ -1,6 +1,11 @@
 package com.hexagon.domain.application
 
 import com.hexagon.db.DatabaseConnection
+import com.hexagon.events.BalanceProjection
 
-class AccountService (private val connection: DatabaseConnection) {
+class AccountService (connection: DatabaseConnection) {
+
+    private val balanceProjection = BalanceProjection(connection)
+
+    fun getBalance(accountId: String) = balanceProjection.getBalance(accountId)
 }
