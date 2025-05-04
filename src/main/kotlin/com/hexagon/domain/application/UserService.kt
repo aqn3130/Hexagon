@@ -2,6 +2,7 @@ package com.hexagon.domain.application
 
 import com.hexagon.domain.models.User
 import com.domain.ports.UserRepository
+import com.hexagon.ErrorCode
 
 data class User(val id: String, val name: String)
 

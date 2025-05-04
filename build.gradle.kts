@@ -69,6 +69,7 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-api:1.49.0")
     implementation("org.http4k:http4k-opentelemetry:5.47.0.0")
     implementation("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:1.49.0")
+    implementation("org.jooq:jooq:3.20.3")
     testImplementation("org.http4k:http4k-testing-approval")
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.12.0")

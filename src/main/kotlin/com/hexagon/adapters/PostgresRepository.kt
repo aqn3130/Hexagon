@@ -2,13 +2,17 @@ package com.hexagon.adapters
 
 import java.util.*
 import com.domain.ports.UserRepository
+import com.hexagon.ErrorCode
+import com.hexagon.Result
+import com.hexagon.asSuccess
 import com.hexagon.db.DatabaseConnection
 import com.hexagon.domain.models.User
+import org.http4k.core.Status
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.isNull
 
 class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepository {
 
     private fun getConnection() = dbConnection.connect()
-
     override fun getUser(id: String): User? {
         getConnection().use { connection ->
             val statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?")

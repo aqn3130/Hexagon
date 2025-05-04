@@ -4,26 +4,25 @@ import java.util.*
 import com.hexagon.adapters.PostgresRepository
 import com.hexagon.aggregate.Account
 import com.hexagon.db.DatabaseConnection
+import com.hexagon.domain.models.User
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import com.hexagon.eventstore.EventStore
 import com.hexagon.models.UserViewModel
-import org.http4k.core.*
-import org.http4k.core.ContentType.Companion.TEXT_HTML
-import org.http4k.core.Method.POST
-import org.http4k.core.Status.Companion.OK
-import org.http4k.format.Jackson.auto
-import org.http4k.routing.bind
-import org.http4k.routing.path
-import org.http4k.routing.routes
-import org.http4k.template.HandlebarsTemplates
-import org.http4k.template.viewModel
-import com.hexagon.domain.models.User
-import com.hexagon.onFailure
 import com.natpryce.krouton.*
 import com.natpryce.krouton.http4k.ResourceRouter
 import com.natpryce.krouton.http4k.resources
+import org.http4k.core.Body
+import org.http4k.core.ContentType.Companion.TEXT_HTML
 import org.http4k.core.Method.GET
+import org.http4k.core.Method.POST
+import org.http4k.core.Response
+import org.http4k.core.Status
+import org.http4k.core.Status.Companion.OK
+import org.http4k.core.with
+import org.http4k.format.Jackson.auto
+import org.http4k.template.HandlebarsTemplates
+import org.http4k.template.viewModel
 
 fun <T> pathElementType(
     fromPathElement: (valueStr: String) -> T?,

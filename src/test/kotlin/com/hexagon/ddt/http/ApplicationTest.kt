@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 
 class ApplicationTest: BaseTest() {
 
-    val app = Routes().app
+    val app = Routes().resources
 
     @Test
     fun `test create account`() {
