@@ -1,4 +1,4 @@
-package com.hexagon
+package com.hexagon.lib.common.bootstrap
 
 import java.time.Duration
 import com.hexagon.lib.common.ErrorHandler
@@ -24,16 +24,21 @@ class Bootstrap {
         onErrorAction: (Request, Throwable?, Status) -> Response = stacktracePrintingErrorJson,
     ) : HttpHandler {
         val filters = defaultFilters(onErrorAction)
-        return AppAnatomyHttp4kHandlers
-            .kroutons()
+        return AppAnatomyHttp4kHandlers.kroutons()
             .apply { otherwise(router.withFilterIncludingHandlerIfNoMatch(filters)) }
             .toHandler()
     }
 
     private val openTelemetry = configureOpenTelemetry("unknown")
-    private fun defaultFilters(onErrorAction: (Request, Throwable?, Status) -> Response) = OpenTelemetryFilters.server(openTelemetry)
+    private fun defaultFilters(onErrorAction: (Request, Throwable?, Status) -> Response) =
+        OpenTelemetryFilters.server(openTelemetry)
 
-    val stacktracePrintingErrorJson = { _: Request, throwable: Throwable?, status: Status -> ErrorHandler.stacktracePrintingErrorJson(throwable, status) }
+    val stacktracePrintingErrorJson = { _: Request, throwable: Throwable?, status: Status ->
+        ErrorHandler.stacktracePrintingErrorJson(
+            throwable,
+            status
+        )
+    }
 
     private fun configureOpenTelemetry(serviceInstanceId: String): OpenTelemetry {
 

@@ -1,4 +1,4 @@
-package com.hexagon
+package com.hexagon.lib.common.bootstrap
 
 import io.undertow.Undertow
 import io.undertow.UndertowOptions.IDLE_TIMEOUT

@@ -1,4 +1,4 @@
-package com.hexagon
+package com.hexagon.lib.common.bootstrap
 
 import java.nio.charset.StandardCharsets.UTF_8
 import java.util.*

@@ -1,4 +1,4 @@
-package com.hexagon
+package com.hexagon.lib.common.bootstrap
 
 import com.hexagon.lib.monitoring.Monitor
 import com.hexagon.lib.monitoring.MonitoringEvent

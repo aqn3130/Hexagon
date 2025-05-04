@@ -1,4 +1,4 @@
-package com.hexagon
+package com.hexagon.lib.common.bootstrap
 
 import org.apache.sshd.client.SshClient
 import java.util.concurrent.ExecutorService
