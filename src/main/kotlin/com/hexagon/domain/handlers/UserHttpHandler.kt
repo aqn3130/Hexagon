@@ -11,7 +11,7 @@ import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.viewModel
 
 class UserHttpHandler {
-    val userRepository = PostgresRepository(DatabaseConnection())
+    private val userRepository = PostgresRepository(DatabaseConnection())
 
     fun getUserById(request: Request, userId: String) : Response {
         val renderer = HandlebarsTemplates().CachingClasspath()

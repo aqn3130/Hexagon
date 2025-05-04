@@ -17,9 +17,9 @@ data class CreateAccountRequest(val accountId: UUID, val initialBalance: Double)
 data class TransactionRequest(val accountId: String, val amount: Double)
 
 class AccountHttpHandler {
-    val eventStore = EventStore(DatabaseConnection())
+    private val eventStore = EventStore(DatabaseConnection())
     val createAccountLens = Body.auto<CreateAccountRequest>().toLens()
-    val balanceProjection = BalanceProjection(DatabaseConnection())
+    private val balanceProjection = BalanceProjection(DatabaseConnection())
     val transactionLens = Body.auto<TransactionRequest>().toLens()
 
     fun createAccount(request: Request) : Response {
