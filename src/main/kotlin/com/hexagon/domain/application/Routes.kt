@@ -67,17 +67,17 @@ class Routes {
             }
         }
 
-        accounts methods {
-            POST { req ->
-                val request = createAccountLens(req)
-                val account = Account(request.accountId.toString())
-                val event = AccountEvent.AccountCreated(request.accountId.toString(), request.initialBalance)
-                account.apply(event)
-                balanceProjection.updateProjection(event, request.accountId.toString())
-                eventStore.save(account.getUncommittedChanges(), request.accountId.toString())
-                Response(Status.CREATED).body("Account created")
-            }
-        }
+//        accounts methods {
+//            POST { req ->
+//                val request = createAccountLens(req)
+//                val account = Account(request.accountId.toString())
+//                val event = AccountEvent.AccountCreated(request.accountId.toString(), request.initialBalance)
+//                account.apply(event)
+//                balanceProjection.updateProjection(event, request.accountId.toString())
+//                eventStore.save(account.getUncommittedChanges(), request.accountId.toString())
+//                Response(Status.CREATED).body("Account created")
+//            }
+//        }
 
         deposit methods {
             POST { req ->
