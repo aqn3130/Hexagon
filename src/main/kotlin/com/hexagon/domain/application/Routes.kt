@@ -19,6 +19,7 @@ import org.http4k.routing.routes
 import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.viewModel
 import com.hexagon.domain.models.User
+import com.hexagon.onFailure
 import com.natpryce.krouton.*
 import com.natpryce.krouton.http4k.ResourceRouter
 import com.natpryce.krouton.http4k.resources
@@ -46,9 +47,13 @@ class Routes {
     val userRepository = PostgresRepository(DatabaseConnection())
 
     private val userId by string
+    private val accountId by string
     private val getUserById = root + "user" + userId
     private val createUser = root + "user"
     private val accounts = root + "accounts"
+    private val deposit = root + "accounts" + "deposit"
+    private val withdraw = accounts + "withdraw"
+    private val accountBalance = accounts + accountId + "balance"
 
     val resources: ResourceRouter = resources {
 
@@ -83,32 +88,38 @@ class Routes {
             }
         }
 
-        "/accounts/deposit" bind Method.POST to { req ->
-            val request = transactionLens(req)
-            val account = Account(request.accountId)
-            val events = eventStore.getEvents(request.accountId)
-            account.replay(events)
-            val event = AccountEvent.MoneyDeposited(request.amount)
-            account.apply(event)
-            balanceProjection.updateProjection(event, request.accountId)
-            eventStore.save(account.getUncommittedChanges(), request.accountId)
-            Response(Status.OK).body("Deposit successful")
+        deposit methods {
+            POST { req ->
+                val request = transactionLens(req)
+                val account = Account(request.accountId)
+                val events = eventStore.getEvents(request.accountId)
+                account.replay(events)
+                val event = AccountEvent.MoneyDeposited(request.amount)
+                account.apply(event)
+                balanceProjection.updateProjection(event, request.accountId)
+                eventStore.save(account.getUncommittedChanges(), request.accountId)
+                Response(OK).body("Deposit successful")
+            }
         }
-        "/accounts/withdraw" bind Method.POST to { req ->
-            val request = transactionLens(req)
-            val account = Account(request.accountId)
-            val events = eventStore.getEvents(request.accountId)
-            account.replay(events)
-            val event = AccountEvent.MoneyWithdrawn(request.amount)
-            account.apply(event)
-            balanceProjection.updateProjection(event, request.accountId)
-            eventStore.save(account.getUncommittedChanges(), request.accountId)
-            Response(Status.OK).body("Withdrawal successful")
+
+        withdraw methods {
+            POST { req ->
+                val request = transactionLens(req)
+                val account = Account(request.accountId)
+                val events = eventStore.getEvents(request.accountId)
+                account.replay(events)
+                val event = AccountEvent.MoneyWithdrawn(request.amount)
+                account.apply(event)
+                balanceProjection.updateProjection(event, request.accountId)
+                eventStore.save(account.getUncommittedChanges(), request.accountId)
+                Response(OK).body("Withdrawal successful")
+            }
         }
-        "/accounts/{accountId}/balance" bind Method.GET to { req ->
-            val accountId = req.path("accountId")!!
-            val balance = balanceProjection.getBalance(accountId)
-            Response(Status.OK).body(balance.toString())
+        accountBalance methods {
+            GET { req, accountId ->
+                val balance = balanceProjection.getBalance(accountId)
+                Response(OK).body(balance.toString())
+            }
         }
     }
 }
