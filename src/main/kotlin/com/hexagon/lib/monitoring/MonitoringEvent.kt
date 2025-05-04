@@ -1,6 +1,6 @@
 package com.hexagon.lib.monitoring
 
-import com.hexagon.Flattenable
+import com.hexagon.lib.common.Flattenable
 
 interface MonitoringEvent :
     Flattenable {

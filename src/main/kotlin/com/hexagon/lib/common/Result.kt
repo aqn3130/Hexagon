@@ -1,12 +1,7 @@
-package com.hexagon
+package com.hexagon.lib.common
 
-import java.io.InputStream
-import com.hexagon.Result.Companion.failure
-import com.hexagon.Result.Companion.success
-import org.http4k.core.Body
-import org.http4k.core.Headers
-import org.http4k.core.Response
-import org.http4k.core.Status
+import com.hexagon.lib.common.Result.Companion.failure
+import com.hexagon.lib.common.Result.Companion.success
 
 @Suppress("unused")
 sealed class Result<out ERR : ErrorCode, out T> {

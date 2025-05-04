@@ -1,6 +1,8 @@
 package com.hexagon
 
 import java.time.Duration
+import com.hexagon.lib.common.ErrorHandler
+import com.hexagon.lib.common.OpenTelemetryFilters
 import com.natpryce.krouton.http4k.ResourceRouter
 import com.natpryce.krouton.http4k.withFilter
 import io.opentelemetry.api.OpenTelemetry
