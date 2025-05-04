@@ -13,7 +13,6 @@ object HexagonServer : ApplicationCreator {
         Bootstrap().startServer(HexagonServer)
     }
 
-
     override fun invoke(bootstrap: Bootstrap): HexagonApplication =
         HexagonApplication(EventMonitor, bootstrap.createHttp4KServerWithKrouton(Routes().resources))
 }

@@ -24,14 +24,6 @@ import org.http4k.format.Jackson.auto
 import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.viewModel
 
-fun <T> pathElementType(
-    fromPathElement: (valueStr: String) -> T?,
-    toPathElement: (T) -> String,
-): PathElementType<T> = object : PathElementType<T> {
-    override fun parsePathElement(element: String) = fromPathElement(element)
-    override fun pathElementFrom(value: T) = toPathElement(value)
-}
-
 class Routes {
 
     val eventStore = EventStore(DatabaseConnection())
