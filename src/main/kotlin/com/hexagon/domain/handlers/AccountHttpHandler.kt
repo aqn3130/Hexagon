@@ -24,7 +24,7 @@ class AccountHttpHandler {
     private val balanceProjection = BalanceProjection(DatabaseConnection())
     val transactionLens = Body.auto<TransactionRequest>().toLens()
 
-    fun createAccount(request: Request) : Response {
+    fun createAccount(request: Request): Response {
         val accountLens = createAccountLens(request)
         val account = Account(accountLens.accountId.toString())
         val event = AccountEvent.AccountCreated(accountLens.accountId.toString(), accountLens.initialBalance)
@@ -34,7 +34,7 @@ class AccountHttpHandler {
         return Response(Status.CREATED).body("Account created")
     }
 
-    fun deposit(request: Request) : Response {
+    fun deposit(request: Request): Response {
         val accountLens = transactionLens(request)
         val account = Account(accountLens.accountId)
         val events = eventStore.getEvents(accountLens.accountId)
@@ -46,7 +46,7 @@ class AccountHttpHandler {
         return Response(OK).body("Deposit successful")
     }
 
-    fun withdraw(request: Request) : Response {
+    fun withdraw(request: Request): Response {
         val accountLens = transactionLens(request)
         val account = Account(accountLens.accountId)
         val events = eventStore.getEvents(accountLens.accountId)
@@ -58,8 +58,9 @@ class AccountHttpHandler {
         return Response(OK).body("Withdrawal successful")
     }
 
-    fun accountBalance(request: Request, accountId: String) : Response {
-        val balance = AccountQueryHandler(AccountService(connection = DatabaseConnection())).handle(accountId).onFailure { return error("Not found") }
+    fun accountBalance(request: Request, accountId: String): Response {
+        val balance = AccountQueryHandler(AccountService(connection = DatabaseConnection())).handle(accountId)
+            .onFailure { return error("Not found") }
         return Response(OK).body(balance.toString())
     }
 }
