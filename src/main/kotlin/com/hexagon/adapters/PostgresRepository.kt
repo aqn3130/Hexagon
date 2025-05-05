@@ -3,8 +3,8 @@ package com.hexagon.adapters
 import java.util.*
 import com.domain.ports.UserRepository
 import com.hexagon.db.DatabaseConnection
-import com.hexagon.domain.models.Name
-import com.hexagon.domain.models.User
+import com.hexagon.aggregate.Name
+import com.hexagon.aggregate.User
 
 class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepository {
 
@@ -18,7 +18,8 @@ class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepo
                 User(resultSet.getString("id"), Name(
                     resultSet.getString("name"),
                     resultSet.getString("name")
-                ))
+                )
+                )
             } else {
                 null
             }

@@ -1,6 +1,6 @@
 package com.domain.ports
 
-import com.hexagon.domain.models.User
+import com.hexagon.aggregate.User
 
 interface UserRepository {
     fun getUser(id: String): User?

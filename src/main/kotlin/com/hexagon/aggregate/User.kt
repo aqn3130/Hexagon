@@ -1,4 +1,4 @@
-package com.hexagon.domain.models
+package com.hexagon.aggregate
 
 data class User(val id: String, val name: Name)
 
