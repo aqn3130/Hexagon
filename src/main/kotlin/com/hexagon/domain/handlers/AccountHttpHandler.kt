@@ -7,11 +7,13 @@ import com.hexagon.domain.application.AccountService
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import com.hexagon.eventstore.EventStore
+import com.hexagon.lib.common.AccountErrorCode
 import com.hexagon.lib.common.onFailure
 import org.http4k.core.Body
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
+import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Status.Companion.OK
 import org.http4k.format.Jackson.auto
 
@@ -60,7 +62,7 @@ class AccountHttpHandler {
 
     fun accountBalance(request: Request, accountId: String): Response {
         val balance = AccountQueryHandler(AccountService(connection = DatabaseConnection())).handle(accountId)
-            .onFailure { return error("Not found") }
+            .onFailure { return Response(NOT_FOUND)  }
         return Response(OK).body(balance.toString())
     }
 }

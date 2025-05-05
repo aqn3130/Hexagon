@@ -42,3 +42,15 @@ inline fun <ERR : ErrorCode, T> Result<ERR, T>.onFailure(handler: (Result.Failur
         is Result.Failure -> handler(this)
         is Result.Success -> value
     }
+
+inline fun <ERRA : ErrorCode, ERRB : ErrorCode, T> Result<ERRA, T>.mapFailure(f: (ERRA) -> ERRB): Result<ERRB, T> =
+    when (this) {
+        is Result.Failure -> failure(f(value))
+        is Result.Success -> this
+    }
+
+inline fun <ERR : ErrorCode, T> Result<ERR, T>.orElse(f: (ERR) -> T): T =
+    when (this) {
+        is Result.Failure -> f(value)
+        is Result.Success<T> -> value
+    }
