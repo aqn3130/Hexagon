@@ -1,5 +1,5 @@
 package com.hexagon.lib.common
 
-sealed interface AccountErrorCode : ErrorCode {
-    data object NotFound : AccountErrorCode
-}
+sealed interface AccountErrorCode : ErrorCode
+
+data object NotFound : AccountErrorCode
