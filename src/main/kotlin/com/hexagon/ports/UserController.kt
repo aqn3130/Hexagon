@@ -17,7 +17,7 @@ class UserController(private val userService: PostgresRepository) {
     fun getUser(request: Request): Response {
         val id = request.path("id") ?: return Response(Status.BAD_REQUEST)
         val user = userService.getUser(id) ?: return Response(Status.NOT_FOUND)
-        val viewModel = UserViewModel(user.id, user.name)
+        val viewModel = UserViewModel(user.id, user.name.getName())
         return Response(Status.OK).with(view of viewModel)
     }
 }

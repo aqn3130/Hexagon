@@ -2,6 +2,7 @@ package com.hexagon.domain.handlers
 
 import com.hexagon.adapters.PostgresRepository
 import com.hexagon.db.DatabaseConnection
+import com.hexagon.domain.models.Name
 import com.hexagon.domain.models.User
 import com.hexagon.models.UserViewModel
 import org.http4k.core.*
@@ -17,13 +18,13 @@ class UserHttpHandler {
         val renderer = HandlebarsTemplates().CachingClasspath()
         val view = Body.viewModel(renderer, TEXT_HTML).toLens()
         val user = userRepository.getUser(userId) ?: return Response(Status.NOT_FOUND)
-        val viewModel = user.let { UserViewModel(it.id, it.name) }
+        val viewModel = user.let { UserViewModel(it.id, it.name.getName()) }
         return Response(OK).with(view of viewModel)
     }
 
     fun createUser(request: Request) : Response {
-        val name = request.query("name")
-        val user = request.bodyString().let { User(it, name.toString()) }
+        val name = request.query("name").toString()
+        val user = request.bodyString().let { User(it, Name(name, name)) }
         userRepository.saveUser(user)
         return Response(Status.CREATED)
     }

@@ -3,6 +3,7 @@ package com.hexagon.adapters
 import java.util.*
 import com.domain.ports.UserRepository
 import com.hexagon.db.DatabaseConnection
+import com.hexagon.domain.models.Name
 import com.hexagon.domain.models.User
 
 class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepository {
@@ -14,7 +15,10 @@ class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepo
             statement.setString(1, id)
             val resultSet = statement.executeQuery()
             return if (resultSet.next()) {
-                User(resultSet.getString("id"), resultSet.getString("name"))
+                User(resultSet.getString("id"), Name(
+                    resultSet.getString("name"),
+                    resultSet.getString("name")
+                ))
             } else {
                 null
             }
@@ -30,7 +34,7 @@ class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepo
         getConnection().use { connection ->
             val statement = connection.prepareStatement("INSERT INTO users (id, name) VALUES (?, ?)")
             statement.setString(1, toExternalForm(userId))
-            statement.setString(2, user.name)
+            statement.setString(2, user.name.getName())
             statement.executeUpdate()
         }
     }
