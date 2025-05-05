@@ -2,7 +2,7 @@ package com.hexagon.events
 
 import java.util.UUID
 import com.hexagon.db.DatabaseConnection
-import com.hexagon.aggregate.Account
+import com.hexagon.domain.models.Account
 import com.hexagon.eventstore.EventStore
 
 class ExampleAccountEvents {

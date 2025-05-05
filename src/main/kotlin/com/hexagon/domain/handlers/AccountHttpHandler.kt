@@ -1,13 +1,12 @@
 package com.hexagon.domain.handlers
 
 import java.util.*
-import com.hexagon.aggregate.Account
+import com.hexagon.domain.models.Account
 import com.hexagon.db.DatabaseConnection
 import com.hexagon.domain.application.AccountService
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import com.hexagon.eventstore.EventStore
-import com.hexagon.lib.common.AccountErrorCode
 import com.hexagon.lib.common.onFailure
 import org.http4k.core.Body
 import org.http4k.core.Request

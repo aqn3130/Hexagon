@@ -1,6 +1,6 @@
 package com.hexagon.ddt
 
-import com.hexagon.aggregate.Account
+import com.hexagon.domain.models.Account
 import com.hexagon.events.AccountEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

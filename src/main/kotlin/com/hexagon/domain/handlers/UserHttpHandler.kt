@@ -2,8 +2,8 @@ package com.hexagon.domain.handlers
 
 import com.hexagon.adapters.PostgresRepository
 import com.hexagon.db.DatabaseConnection
-import com.hexagon.aggregate.Name
-import com.hexagon.aggregate.User
+import com.hexagon.domain.models.Name
+import com.hexagon.domain.models.User
 import com.hexagon.models.UserViewModel
 import org.http4k.core.*
 import org.http4k.core.ContentType.Companion.TEXT_HTML

@@ -1,4 +1,4 @@
-package com.hexagon.aggregate
+package com.hexagon.domain.models
 
 import com.hexagon.events.AccountEvent
 

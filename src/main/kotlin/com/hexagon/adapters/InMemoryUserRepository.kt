@@ -1,6 +1,6 @@
 package com.hexagon.adapters
 
-import com.hexagon.aggregate.User
+import com.hexagon.domain.models.User
 import com.domain.ports.UserRepository
 
 class InMemoryUserRepository : UserRepository {
