@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test
 
 class ApplicationTest: BaseTest() {
 
-    val app = Hexagon(accountRouter = AccountRouter(), userRouter = UserRouter()).resources
-
     @Test
     fun `test create account`() {
         val accountId = UUID.randomUUID()

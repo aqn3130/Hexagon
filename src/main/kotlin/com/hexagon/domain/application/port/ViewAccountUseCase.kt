@@ -1,4 +1,4 @@
-package com.hexagon.domain.application
+package com.hexagon.domain.application.port
 
 import com.hexagon.lib.common.ErrorCode
 import com.hexagon.lib.common.Result

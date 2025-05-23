@@ -4,6 +4,7 @@ import java.util.*
 import com.hexagon.domain.models.Account
 import com.hexagon.db.DatabaseConnection
 import com.hexagon.domain.application.AccountService
+import com.hexagon.domain.handlers.adapter.AccountQueryHandler
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import com.hexagon.eventstore.EventStore
