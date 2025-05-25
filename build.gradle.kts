@@ -78,6 +78,10 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
     implementation("org.http4k:http4k-testing-webdriver")
+    testImplementation(kotlin("test"))
+    implementation("org.http4k:http4k-client-okhttp")
+    implementation("org.http4k:http4k-client-apache")
+    implementation("org.http4k:http4k-client-apache-async")
 
 }
 
