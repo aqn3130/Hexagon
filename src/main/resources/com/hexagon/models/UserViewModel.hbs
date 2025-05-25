@@ -6,5 +6,9 @@
 <body>
 <h1 data-test="user-name">User: {{name}}</h1>
 <p>ID: {{id}}</p>
+<!--TODO: move it to auth page at some point-->
+<form action="/authenticate" method="post">
+    <button data-test="button" type="submit">Button</button>
+</form>
 </body>
 </html>

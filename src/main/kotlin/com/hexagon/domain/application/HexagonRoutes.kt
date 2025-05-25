@@ -15,4 +15,5 @@ object HexagonRoutes {
     val deposit = root + "accounts" + "deposit"
     val withdraw = accounts + "withdraw"
     val accountBalance = accounts + accountId + "balance"
+    val authenticate = root + "authenticate"
 }

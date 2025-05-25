@@ -1,6 +1,7 @@
 package com.hexagon
 
 import com.hexagon.domain.application.AccountRouter
+import com.hexagon.domain.application.AuthenticationRouter
 import com.hexagon.domain.application.Hexagon
 import com.hexagon.domain.application.UserRouter
 import com.hexagon.lib.common.bootstrap.ApplicationCreator
@@ -26,10 +27,11 @@ object HexagonServer : ApplicationCreator {
         )
     }
 
-    private fun createRouter() : ResourceRouter = Hexagon(
-            accountRouter = AccountRouter(),
-            userRouter = UserRouter()
-        ).resources
+    private fun createRouter(): ResourceRouter = Hexagon(
+        accountRouter = AccountRouter(),
+        userRouter = UserRouter(),
+        authenticationRouter = AuthenticationRouter()
+    ).resources
 
 }
 
