@@ -17,23 +17,18 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class ApplicationTest: BaseTest() {
-
-
-    private lateinit var client: HttpHandler
+    private lateinit var testApplication: HttpHandler
     private var server: org.http4k.server.Http4kServer? = null
-
 
     @BeforeEach
     fun setup() {
         val mode = System.getenv("testMode") ?: "IN_MEMORY"
         when (mode.uppercase()) {
-            "IN_MEMORY" -> client = app
+            "IN_MEMORY" -> testApplication = app
             "EMBEDDED_HTTP" -> {
                 server = app.asServer(Undertow(0)).start()
                 val baseUri = "http://localhost:${server!!.port()}"
-                client = ApacheClient()
-                client = ClientFilters.SetBaseUriFrom(Uri.of(baseUri)).then(ApacheClient())
-
+                testApplication = ClientFilters.SetBaseUriFrom(Uri.of(baseUri)).then(ApacheClient())
             }
         }
     }
@@ -48,7 +43,7 @@ class ApplicationTest: BaseTest() {
         val accountId = UUID.randomUUID()
         val request = Request(POST, "/accounts").body("""{"accountId":"$accountId","initialBalance":100.0}""")
         request.header("Content-Type", "application/json")
-        val response = client(request)
+        val response = testApplication(request)
 
         assertThat(response, hasStatus(Status.CREATED))
         assertEquals(response.bodyString(), "Account created")
@@ -60,11 +55,11 @@ class ApplicationTest: BaseTest() {
 
         // First, create the account
         val createRequest = Request(POST, "/accounts").body("""{"accountId":"$accountId","initialBalance":100.0}""")
-        client(createRequest)
+        testApplication(createRequest)
 
         // Then, deposit money
         val depositRequest = Request(POST, "/accounts/deposit").body("""{"accountId":"$accountId","amount":50.0}""")
-        val response = client(depositRequest)
+        val response = testApplication(depositRequest)
 
         assertThat(response, hasStatus(Status.OK))
         assertEquals(response.bodyString(), "Deposit successful")
@@ -76,11 +71,11 @@ class ApplicationTest: BaseTest() {
 
         // First, create the account
         val createRequest = Request(POST, "/accounts").body("""{"accountId":"$accountId","initialBalance":100.0}""")
-        client(createRequest)
+        testApplication(createRequest)
 
         // Then, withdraw money
         val withdrawRequest = Request(POST, "/accounts/withdraw").body("""{"accountId":"$accountId","amount":30.0}""")
-        val response = client(withdrawRequest)
+        val response = testApplication(withdrawRequest)
 
         assertThat(response, hasStatus(Status.OK))
         assertEquals(response.bodyString(), "Withdrawal successful")
@@ -91,15 +86,15 @@ class ApplicationTest: BaseTest() {
         val accountId = UUID.randomUUID()
         // First, create the account
         val createRequest = Request(POST, "/accounts").body("""{"accountId":"$accountId","initialBalance":100.0}""")
-        client(createRequest)
+        testApplication(createRequest)
 
         // Then, deposit money
         val depositRequest = Request(POST, "/accounts/deposit").body("""{"accountId":"$accountId","amount":50.0}""")
-        client(depositRequest)
+        testApplication(depositRequest)
 
         // Finally, get the balance
         val balanceRequest = Request(GET, "/accounts/$accountId/balance")
-        val response = client(balanceRequest)
+        val response = testApplication(balanceRequest)
 
         assertThat(response, hasStatus(Status.OK))
         assertEquals(response.bodyString(), "150.0")
