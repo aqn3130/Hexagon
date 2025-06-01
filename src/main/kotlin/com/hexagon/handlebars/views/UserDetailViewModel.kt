@@ -5,9 +5,10 @@ import com.hexagon.db.DatabaseConnection
 import com.hexagon.domain.models.User
 
 class UserDetailViewModel(private val userId: String) {
-    private val userRepository = PostgresRepository(DatabaseConnection())
+    private val userRepository = PostgresRepository()
 
     fun getUserViewModel(): User? {
-        return userRepository.getUser(userId)
+        val dbConnection = DatabaseConnection()
+        return userRepository.getUser(dbConnection, userId)
     }
 }

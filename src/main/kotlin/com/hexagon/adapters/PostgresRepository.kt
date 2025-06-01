@@ -6,12 +6,12 @@ import com.hexagon.db.DatabaseConnection
 import com.hexagon.domain.models.Name
 import com.hexagon.domain.models.User
 
-class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepository {
+class PostgresRepository(): UserRepository {
 
-    private fun getConnection() = dbConnection.connect()
-    override fun getUser(id: String): User? {
-        getConnection().use { connection ->
-            val statement = connection.prepareStatement("SELECT * FROM users WHERE id = ?")
+    override fun getUser(dbConnection: DatabaseConnection, id: String): User? {
+        val connection = dbConnection.connect()
+        connection.use {
+            val statement = it.prepareStatement("SELECT * FROM users WHERE id = ?")
             statement.setString(1, id)
             val resultSet = statement.executeQuery()
             return if (resultSet.next()) {
@@ -30,10 +30,11 @@ class PostgresRepository(private val dbConnection: DatabaseConnection): UserRepo
         return id.toString()
     }
 
-    override fun saveUser(user: User) {
+    override fun saveUser(dbConnection: DatabaseConnection, user: User) {
         val userId = UUID.randomUUID()
-        getConnection().use { connection ->
-            val statement = connection.prepareStatement("INSERT INTO users (id, name) VALUES (?, ?)")
+        val connection = dbConnection.connect()
+        connection.use {
+            val statement = it.prepareStatement("INSERT INTO users (id, name) VALUES (?, ?)")
             statement.setString(1, toExternalForm(userId))
             statement.setString(2, user.name.getName())
             statement.executeUpdate()
