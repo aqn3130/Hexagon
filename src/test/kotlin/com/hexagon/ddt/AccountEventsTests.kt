@@ -1,11 +1,11 @@
 package com.hexagon.ddt
 
-import com.hexagon.domain.models.Account
+import com.hexagon.domain.models.*
 import com.hexagon.events.AccountEvent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class AccountEventsTests: BaseTest(){
+class AccountEventsTests : BaseTest() {
     @Test
     fun `should apply AccountCreated event`() {
         val accountId = getAccountId()
@@ -60,5 +60,22 @@ class AccountEventsTests: BaseTest(){
         account.replay(listOfEvents)
 
         assertEquals(expectedAccountBalance, account.getBalance())
+    }
+
+    @Test
+    fun `should fold events to rebuild state`() {
+        val accountId = getAccountId()
+        val events = listOf(
+            AccountCreated(accountId, initialBalance = 100.00),
+            Deposited(accountId, amount = 50.00),
+            Withdrawn(accountId, amount = 30.00)
+        )
+
+        val currentState = events.fold(null as BankAccount?) { balance, event -> applyEvent(balance, event) }
+        val accountBalance = (100.00 + 50.00) - 30.00
+
+        if (currentState != null) {
+            assertEquals(accountBalance, currentState.balance)
+        }
     }
 }
