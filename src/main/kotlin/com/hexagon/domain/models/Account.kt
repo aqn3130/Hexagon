@@ -1,12 +1,13 @@
 package com.hexagon.domain.models
 
+import com.hexagon.domain.application.port.input.AccountUseCase
 import com.hexagon.events.AccountEvent
 
-class Account(private val account_id: String) {
+data class Account(private val account_id: String) : AccountUseCase {
     private var balance: Double = 0.0
     private val changes = mutableListOf<AccountEvent>()
 
-    fun apply(event: AccountEvent) {
+    override fun apply(event: AccountEvent) {
         when (event) {
             is AccountEvent.AccountCreated -> balance = event.initialBalance
             is AccountEvent.MoneyDeposited -> balance += event.amount
@@ -15,18 +16,18 @@ class Account(private val account_id: String) {
         changes.add(event)
     }
 
-    fun deposit(amount: Double) {
+    override fun deposit(amount: Double) {
         apply(AccountEvent.MoneyDeposited(amount))
     }
 
-    fun withdraw(amount: Double) {
+    override fun withdraw(amount: Double) {
         apply(AccountEvent.MoneyWithdrawn(amount))
     }
 
-    fun getBalance(): Double = balance
-    fun getUncommittedChanges(): List<AccountEvent> = changes
+    override fun getBalance(): Double = balance
+    override fun getUncommittedChanges(): List<AccountEvent> = changes
 
-    fun replay(events: List<AccountEvent>) {
+    override fun replay(events: List<AccountEvent>) {
         events.forEach { apply(it) }
     }
 }
