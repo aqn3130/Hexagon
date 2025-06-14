@@ -4,6 +4,7 @@ import java.util.*
 import com.hexagon.db.DatabaseConfig
 import com.hexagon.domain.models.Account
 import com.hexagon.domain.application.AccountService
+import com.hexagon.domain.application.port.input.AccountBalanceQuery
 import com.hexagon.domain.handlers.adapter.AccountQueryHandler
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
@@ -61,7 +62,7 @@ class AccountHttpHandler {
     }
 
     fun accountBalance(request: Request, accountId: String): Response {
-        val balance = AccountQueryHandler(AccountService(DatabaseConfig)).handle(accountId)
+        val balance = AccountQueryHandler(AccountService(DatabaseConfig)).handle(AccountBalanceQuery(accountId))
             .onFailure { return Response(NOT_FOUND)  }
         return Response(OK).body(balance.toString())
     }
