@@ -1,8 +1,8 @@
 package com.hexagon.domain.handlers
 
 import java.util.*
+import com.hexagon.db.DatabaseConfig
 import com.hexagon.domain.models.Account
-import com.hexagon.db.DatabaseConnection
 import com.hexagon.domain.application.AccountService
 import com.hexagon.domain.handlers.adapter.AccountQueryHandler
 import com.hexagon.events.AccountEvent
@@ -21,9 +21,9 @@ data class CreateAccountRequest(val accountId: UUID, val initialBalance: Double)
 data class TransactionRequest(val accountId: String, val amount: Double)
 
 class AccountHttpHandler {
-    private val eventStore = EventStore(DatabaseConnection())
+    private val eventStore = EventStore(DatabaseConfig)
     val createAccountLens = Body.auto<CreateAccountRequest>().toLens()
-    private val balanceProjection = BalanceProjection(DatabaseConnection())
+    private val balanceProjection = BalanceProjection(DatabaseConfig)
     val transactionLens = Body.auto<TransactionRequest>().toLens()
 
     fun createAccount(request: Request): Response {
@@ -61,7 +61,7 @@ class AccountHttpHandler {
     }
 
     fun accountBalance(request: Request, accountId: String): Response {
-        val balance = AccountQueryHandler(AccountService(connection = DatabaseConnection())).handle(accountId)
+        val balance = AccountQueryHandler(AccountService(DatabaseConfig)).handle(accountId)
             .onFailure { return Response(NOT_FOUND)  }
         return Response(OK).body(balance.toString())
     }

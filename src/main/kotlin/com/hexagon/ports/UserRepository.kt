@@ -1,9 +1,10 @@
 package com.domain.ports
 
-import com.hexagon.db.DatabaseConnection
+import com.hexagon.db.DatabaseConfig
+import com.hexagon.db.Transaction
 import com.hexagon.domain.models.User
 
 interface UserRepository {
-    fun getUser(dbConnection: DatabaseConnection, id: String): User?
-    fun saveUser(dbConnection: DatabaseConnection, user: User)
+    fun getUser(dbConfig: DatabaseConfig, id: String): User?
+    fun saveUser(tx: Transaction, user: User)
 }

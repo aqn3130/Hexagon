@@ -82,6 +82,7 @@ dependencies {
     implementation("org.http4k:http4k-client-okhttp")
     implementation("org.http4k:http4k-client-apache")
     implementation("org.http4k:http4k-client-apache-async")
+    implementation("com.zaxxer:HikariCP:6.3.0")
 
 }
 

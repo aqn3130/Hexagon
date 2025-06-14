@@ -2,14 +2,14 @@ package com.hexagon.eventstore
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet
-import com.hexagon.db.DatabaseConnection
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.hexagon.db.DatabaseConfig
 import com.hexagon.events.AccountEvent
 
-class EventStore(dbConnection: DatabaseConnection) {
+class EventStore(dbConfig: DatabaseConfig) {
     private val objectMapper = jacksonObjectMapper()
-    private val connection = dbConnection.connect()
+    private val connection = dbConfig.dataSource.connection
     fun save(events: List<AccountEvent>, account_id: String) {
         val sql = "INSERT INTO events (account_id, event_type, event_data) VALUES (?, ?, ?)"
         val preparedStatement: PreparedStatement = connection.prepareStatement(sql)

@@ -1,12 +1,12 @@
 package com.hexagon.domain.application
 
-import com.hexagon.db.DatabaseConnection
+import com.hexagon.db.DatabaseConfig
 import com.hexagon.domain.models.Account
 import com.hexagon.eventstore.EventStore
 
-class AccountService (connection: DatabaseConnection) {
+class AccountService (dbConfig: DatabaseConfig) {
 
-    private val eventStore = EventStore(connection)
+    private val eventStore = EventStore(dbConfig)
 
     fun getBalance(accountId: String) : Double {
         val events = eventStore.getEvents(accountId)

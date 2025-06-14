@@ -1,7 +1,7 @@
-package com.hexagon.domain.handlers
+package com.hexagon.domain.handlers.adapter
 
 import com.hexagon.adapters.PostgresRepository
-import com.hexagon.db.DatabaseConnection
+import com.hexagon.db.SimpleTransactor
 import com.hexagon.domain.models.Name
 import com.hexagon.domain.models.User
 import com.hexagon.handlebars.views.UserDetailViewModel
@@ -12,8 +12,7 @@ import org.http4k.core.Status.Companion.OK
 import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.viewModel
 
-class UserHttpHandler {
-    private val userRepository = PostgresRepository()
+class UserHttpHandler(val userRepository: PostgresRepository, val transactor: SimpleTransactor) {
 
     fun getUserById(request: Request, userId: String) : Response {
         val renderer = HandlebarsTemplates().CachingClasspath()
@@ -27,8 +26,11 @@ class UserHttpHandler {
         val firstName = request.query("firstname").toString()
         val lastName = request.query("lastname").toString()
         val user = request.bodyString().let { User(it, Name(firstName, lastName)) }
-        val dbConnection = DatabaseConnection()
-        userRepository.saveUser(dbConnection, user)
+
+        transactor.write { tx ->
+            userRepository.saveUser(tx, user)
+        }
+
         return Response(Status.CREATED)
     }
 }
