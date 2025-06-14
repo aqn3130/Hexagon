@@ -25,6 +25,7 @@ data class Account(private val account_id: String) : AccountUseCase {
     }
 
     override fun getBalance(): Double = balance
+
     override fun getUncommittedChanges(): List<AccountEvent> = changes
 
     override fun replay(events: List<AccountEvent>) {

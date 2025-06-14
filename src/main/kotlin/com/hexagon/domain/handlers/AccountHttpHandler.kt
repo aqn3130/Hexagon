@@ -5,10 +5,13 @@ import com.hexagon.db.DatabaseConfig
 import com.hexagon.domain.models.Account
 import com.hexagon.domain.application.AccountService
 import com.hexagon.domain.application.port.input.AccountBalanceQuery
+import com.hexagon.domain.application.port.input.AccountDepositCommand
+import com.hexagon.domain.handlers.adapter.AccountDepositHandler
 import com.hexagon.domain.handlers.adapter.AccountQueryHandler
 import com.hexagon.events.AccountEvent
 import com.hexagon.events.BalanceProjection
 import com.hexagon.eventstore.EventStore
+import com.hexagon.lib.common.asSuccess
 import com.hexagon.lib.common.onFailure
 import org.http4k.core.Body
 import org.http4k.core.Request
@@ -21,9 +24,9 @@ import org.http4k.format.Jackson.auto
 data class CreateAccountRequest(val accountId: UUID, val initialBalance: Double)
 data class TransactionRequest(val accountId: String, val amount: Double)
 
-class AccountHttpHandler {
+class AccountHttpHandler (val accountDepositHandler: AccountDepositHandler) {
     private val eventStore = EventStore(DatabaseConfig)
-    val createAccountLens = Body.auto<CreateAccountRequest>().toLens()
+    private val createAccountLens = Body.auto<CreateAccountRequest>().toLens()
     private val balanceProjection = BalanceProjection(DatabaseConfig)
     val transactionLens = Body.auto<TransactionRequest>().toLens()
 
@@ -39,13 +42,10 @@ class AccountHttpHandler {
 
     fun deposit(request: Request): Response {
         val accountLens = transactionLens(request)
-        val account = Account(accountLens.accountId)
-        val events = eventStore.getEvents(accountLens.accountId)
-        account.replay(events)
-        val event = AccountEvent.MoneyDeposited(accountLens.amount)
-        account.apply(event)
-        balanceProjection.updateProjection(event, accountLens.accountId)
-        eventStore.save(account.getUncommittedChanges(), accountLens.accountId)
+        val command = AccountDepositCommand(accountLens.accountId, accountLens.amount)
+
+        accountDepositHandler.handle(command).asSuccess()
+
         return Response(OK).body("Deposit successful")
     }
 
